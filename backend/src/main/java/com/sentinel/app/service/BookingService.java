@@ -27,7 +27,7 @@ public class BookingService {
             throw new IllegalArgumentException("Only " + event.getAvailableSeats() + " seats left for " + event.getName());
         }
 
-        event.setAvailableSeats(event.getAvailableSeats() + request.getSeats());
+        event.setAvailableSeats(event.getAvailableSeats() - request.getSeats());
         eventRepository.save(event);
 
         Booking booking = new Booking(request.getEventId(), request.getCustomerName(),
