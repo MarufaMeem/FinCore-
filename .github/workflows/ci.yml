@@ -48,7 +48,7 @@ jobs:
         run: |
           mvn -B clean package -DskipTests
           nohup java -jar target/*.jar > backend.log 2>&1 &
-          npx wait-on http://localhost:8080/api/events -t 60000 || (echo "--- backend.log ---" && cat backend.log && exit 1)
+          npx wait-on http://localhost:8081/api/events -t 60000 || (echo "--- backend.log ---" && cat backend.log && exit 1)
         env:
           DB_HOST: localhost
           DB_PORT: 5432
