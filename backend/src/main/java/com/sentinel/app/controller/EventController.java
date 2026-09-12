@@ -2,6 +2,7 @@ package com.sentinel.app.controller;
 
 import com.sentinel.app.model.Event;
 import com.sentinel.app.repository.EventRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class EventController {
 
     @GetMapping
     public List<Event> listEvents() {
-        return eventRepository.findAll();
+        return eventRepository.findAll(Sort.by("id").ascending());
     }
 
     @GetMapping("/{id}")

@@ -1,0 +1,186 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 4,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-09-12T10:15:47.060Z",
+    "end": "2026-09-12T10:15:51.473Z",
+    "duration": 4413,
+    "testsRegistered": 5,
+    "passPercent": 80,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "20e881fc-a4a8-4268-881b-49ea1849e456",
+      "title": "",
+      "fullFile": "cypress\\e2e\\booking.cy.js",
+      "file": "cypress\\e2e\\booking.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "276d097e-a2ce-4a99-ba59-b97e01e42c50",
+          "title": "Event booking flow",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "lists available events",
+              "fullTitle": "Event booking flow lists available events",
+              "timedOut": null,
+              "duration": 878,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=event-card]').should('have.length.greaterThan', 0);",
+              "err": {},
+              "uuid": "14b05dc2-f39b-40df-8757-970a36db2c5f",
+              "parentUUID": "276d097e-a2ce-4a99-ba59-b97e01e42c50",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "shows the booking form after selecting an event",
+              "fullTitle": "Event booking flow shows the booking form after selecting an event",
+              "timedOut": null,
+              "duration": 239,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=select-event]').first().click();\ncy.get('[data-cy=customer-name]').should('be.visible');",
+              "err": {},
+              "uuid": "c3ffb9ce-b200-4f56-9713-d283e6bc4fc7",
+              "parentUUID": "276d097e-a2ce-4a99-ba59-b97e01e42c50",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "rejects booking with missing fields",
+              "fullTitle": "Event booking flow rejects booking with missing fields",
+              "timedOut": null,
+              "duration": 316,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=select-event]').first().click();\ncy.get('[data-cy=submit-booking]').click();\ncy.get('[data-cy=booking-error]').should('be.visible');",
+              "err": {},
+              "uuid": "7c41eb21-0d60-41cb-9b98-e9904231f7f1",
+              "parentUUID": "276d097e-a2ce-4a99-ba59-b97e01e42c50",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "confirms a valid booking",
+              "fullTitle": "Event booking flow confirms a valid booking",
+              "timedOut": null,
+              "duration": 1176,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=select-event]').first().click();\ncy.get('[data-cy=customer-name]').type('Fahim Rahman');\ncy.get('[data-cy=customer-email]').type('fahim@example.com');\ncy.get('[data-cy=seat-count]').clear().type('2');\ncy.get('[data-cy=submit-booking]').click();\ncy.get('[data-cy=booking-success]').should('be.visible');",
+              "err": {},
+              "uuid": "6a185c87-6531-4b57-aa4f-c608ad64e99e",
+              "parentUUID": "276d097e-a2ce-4a99-ba59-b97e01e42c50",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "reduces available seats after a successful booking",
+              "fullTitle": "Event booking flow reduces available seats after a successful booking",
+              "timedOut": null,
+              "duration": 1643,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=event-card]').first().find('p').eq(1).invoke('text').then(before => {\n  const seatsBefore = parseInt(before.match(/(\\d+)\\s*\\/\\s*(\\d+)/)[1], 10);\n  cy.get('[data-cy=select-event]').first().click();\n  cy.get('[data-cy=customer-name]').type('Nusrat Jahan');\n  cy.get('[data-cy=customer-email]').type('nusrat@example.com');\n  cy.get('[data-cy=seat-count]').clear().type('3');\n  cy.get('[data-cy=submit-booking]').click();\n  cy.get('[data-cy=booking-success]').should('be.visible');\n  cy.reload();\n  cy.get('[data-cy=event-card]').first().find('p').eq(1).invoke('text').then(after => {\n    const seatsAfter = parseInt(after.match(/(\\d+)\\s*\\/\\s*(\\d+)/)[1], 10);\n    expect(seatsAfter).to.eq(seatsBefore - 3);\n  });\n});",
+              "err": {
+                "message": "AssertionError: expected 501 to equal 77",
+                "estack": "AssertionError: expected 501 to equal 77\n    at Context.eval (webpack://sentinel-e2e-and-tools/./cypress/e2e/booking.cy.js:48:30)",
+                "diff": "- 501\n+ 77\n"
+              },
+              "uuid": "353076cc-1eb0-4864-97a9-d150427f59b8",
+              "parentUUID": "276d097e-a2ce-4a99-ba59-b97e01e42c50",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "14b05dc2-f39b-40df-8757-970a36db2c5f",
+            "c3ffb9ce-b200-4f56-9713-d283e6bc4fc7",
+            "7c41eb21-0d60-41cb-9b98-e9904231f7f1",
+            "6a185c87-6531-4b57-aa4f-c608ad64e99e"
+          ],
+          "failures": [
+            "353076cc-1eb0-4864-97a9-d150427f59b8"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 4252,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
