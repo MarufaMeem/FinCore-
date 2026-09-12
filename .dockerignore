@@ -1,0 +1,9 @@
+# Ignore build directories and testing artifacts
+backend/target/
+frontend/node_modules/
+frontend/dist/
+cypress/
+cypress.config.js
+.git/
+.github/
+*.log
