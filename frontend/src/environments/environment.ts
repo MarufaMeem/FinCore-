@@ -1,3 +1,3 @@
 export const environment = {
-  apiBaseUrl: 'http://localhost:8081/api'
+  apiBaseUrl: 'https://sentinel-9a0n.onrender.com/api'
 };
