@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "cy:run": "rimraf cypress/results && cypress run",
     "report:jira": "node scripts/report-to-jira.js cypress/results"
   },
   "devDependencies": {
     "cypress": "^13.13.0",
-    "mochawesome": "^7.1.3"
+    "mochawesome": "^7.1.3",
+    "rimraf": "^5.0.5"
   }
 }
