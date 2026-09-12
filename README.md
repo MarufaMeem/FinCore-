@@ -1,5 +1,7 @@
 # Sentinel — Full-Stack Scalable Booking System & Automated CI/CD Pipeline
 
+**Live Production URL:** [https://sentinel-frontend-11w4.onrender.com](https://sentinel-frontend-11w4.onrender.com)
+
 Sentinel is a comprehensive, production-ready Full-Stack application architecture built to demonstrate advanced software engineering practices. It features a robust **Java Spring Boot** backend, a responsive **Angular** frontend, comprehensive **Cypress** automated end-to-end testing, and an advanced **CI/CD pipeline** with automated **JIRA bug tracking** integration.
 
 ---
