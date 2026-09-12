@@ -8,25 +8,33 @@ import { Event, EventService } from './event.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="card">
-      <h3>Book: {{ event.name }}</h3>
-      <p>{{ event.availableSeats }} seats left &middot; ৳{{ event.price }} each</p>
+    <div class="card" style="margin-top: 40px;">
+      <div class="form-header">
+        <h3>Book: {{ event.name }}</h3>
+        <p class="subtitle" style="margin-bottom: 0;">{{ event.availableSeats }} seats left &middot; ৳{{ event.price }} each</p>
+      </div>
 
-      <label>Name</label>
-      <input data-cy="customer-name" [(ngModel)]="name" placeholder="Full name">
+      <div class="form-group">
+        <label>Name</label>
+        <input data-cy="customer-name" [(ngModel)]="name" placeholder="John Doe">
+      </div>
 
-      <label>Email</label>
-      <input data-cy="customer-email" [(ngModel)]="email" placeholder="you@example.com">
+      <div class="form-group">
+        <label>Email</label>
+        <input data-cy="customer-email" [(ngModel)]="email" placeholder="john@example.com">
+      </div>
 
-      <label>Seats</label>
-      <input data-cy="seat-count" type="number" [(ngModel)]="seats" min="1">
+      <div class="form-group">
+        <label>Seats</label>
+        <input data-cy="seat-count" type="number" [(ngModel)]="seats" min="1">
+      </div>
 
       <button data-cy="submit-booking" (click)="submit()" [disabled]="submitting">
-        {{ submitting ? 'Booking...' : 'Confirm booking' }}
+        {{ submitting ? 'Processing Booking...' : 'Confirm Booking' }}
       </button>
 
-      <p class="error" *ngIf="errorMessage" data-cy="booking-error">{{ errorMessage }}</p>
-      <p class="success" *ngIf="successMessage" data-cy="booking-success">{{ successMessage }}</p>
+      <div class="error" *ngIf="errorMessage" data-cy="booking-error">{{ errorMessage }}</div>
+      <div class="success" *ngIf="successMessage" data-cy="booking-success">{{ successMessage }}</div>
     </div>
   `
 })
@@ -41,7 +49,7 @@ export class BookingFormComponent {
   errorMessage = '';
   successMessage = '';
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService) { }
 
   submit() {
     this.errorMessage = '';
