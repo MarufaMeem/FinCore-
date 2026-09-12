@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 
 @Service
 public class BookingService {
-
     private final EventRepository eventRepository;
     private final BookingRepository bookingRepository;
 
@@ -28,21 +27,11 @@ public class BookingService {
             throw new IllegalArgumentException("Only " + event.getAvailableSeats() + " seats left for " + event.getName());
         }
 
-        // NOTE: seeded bug, left in intentionally for the demo pipeline.
-        // This should SUBTRACT booked seats from availableSeats — it currently ADDS them.
-        // Cypress test `booking.cy.js` -> "reduces available seats after booking" is written
-        // to catch exactly this, which is the point: it should fail CI, auto-file a JIRA bug,
-        // and get fixed as part of demonstrating the pipeline end to end.
         event.setAvailableSeats(event.getAvailableSeats() + request.getSeats());
         eventRepository.save(event);
 
-        Booking booking = new Booking(
-                request.getEventId(),
-                request.getCustomerName(),
-                request.getCustomerEmail(),
-                request.getSeats(),
-                "CONFIRMED"
-        );
+        Booking booking = new Booking(request.getEventId(), request.getCustomerName(),
+                request.getCustomerEmail(), request.getSeats(), "CONFIRMED");
         return bookingRepository.save(booking);
     }
 }
