@@ -1,66 +1,49 @@
-# Sentinel — Full-Stack Scalable Booking System & Automated CI/CD Pipeline
+# Sentinel — End-to-End QA Automation Case Study
 
-**Live Production URL:** [https://sentinel-frontend-11w4.onrender.com](https://sentinel-frontend-11w4.onrender.com)
+Sentinel is a mini event-booking platform built to demonstrate an end-to-end answer to a common delivery problem: handing a defect from manual QA to engineering through a bug tracker is slow, inconsistent, and easy to lose context in. Sentinel automates that path: a browser test detects a booking failure, CI captures its result, and a JIRA bug is created with the failure details for automated triage and dashboard reporting.
 
-Sentinel is a comprehensive, production-ready Full-Stack application architecture built to demonstrate advanced software engineering practices. It features a robust **Java Spring Boot** backend, a responsive **Angular** frontend, comprehensive **Cypress** automated end-to-end testing, and an advanced **CI/CD pipeline** with automated **JIRA bug tracking** integration.
+## Live services
 
----
+- Frontend: [Sentinel booking app](https://sentinel-frontend-11w4.onrender.com)
+- Backend API: [https://sentinel-9a0n.onrender.com](https://sentinel-9a0n.onrender.com)
+- JIRA dashboard: **Share link to be added by the project owner** (dashboard currently configured in JIRA as “Sentinel QA Health”)
 
-## Educational Guide: Understanding the Technologies
+## Architecture
 
-If you're new to software engineering or exploring the tech stack used in Sentinel, this section breaks down what these technologies mean and exactly how they function inside this project.
+```text
+Angular booking app → Cypress E2E tests → JIRA REST API reporter
+                                      → JIRA Automation → QA Health dashboard
+                     GitHub Actions CI/CD wraps build, test, and reporting
+```
 
-### 1. Spring Boot (The Backend Brain)
-**What is it?** Spring Boot is a popular Java framework used to build backend servers. It acts as the "brain," handling data processing, managing the database, and responding to requests from the user's browser.
-**How it works in Sentinel:** When a user visits the Sentinel Booking App and clicks "Book Now," their browser asks the Spring Boot server to save the booking. The Spring Boot code validates that there are enough seats left, updates the PostgreSQL database, and responds with a "Success" message.
+The Spring Boot API persists events and bookings in PostgreSQL. GitHub Actions runs the JUnit suite, builds and starts the backend and Angular frontend, runs Cypress, and invokes the Node.js JIRA reporter when test failures are present. Three chained JIRA Automation rules then triage new bugs, notify stakeholders, and add a completion comment when an issue moves to Done. The **Sentinel QA Health** dashboard surfaces the results through Filter Results, 2D statistics, pie-chart, and Created-vs-Resolved gadgets.
 
-### 2. Quality Assurance (QA) 
-**What is it?** QA is the process of testing a software product to ensure it works correctly and doesn't have bugs before giving it to users.
-**How it works in Sentinel:** Instead of manually clicking through the app to test it every time we change the code, Sentinel incorporates automated QA engineering principles. We write scripts that mimic human behavior to verify that the app always functions as expected.
+## Tech stack
 
-### 3. Cypress (Automated Testing Framework)
-**What is it?** Cypress is an incredibly powerful tool used for End-to-End (E2E) testing. It basically acts as an "invisible robot" that opens a web browser, clicks buttons, and types into forms exactly like a human user would.
-**How it works in Sentinel:** Sentinel has a `booking.cy.js` script. When run, Cypress automatically opens the frontend, finds the "Name" and "Email" fields, fills them out, clicks the "Confirm Booking" button, and verifies that the "Success" message appears on the screen—all within seconds.
+- Java 17, Spring Boot 3, PostgreSQL
+- Angular 17 standalone components
+- JUnit 5 and Mockito
+- Cypress and Mochawesome
+- JIRA REST API and JIRA Automation
+- Docker
+- GitHub Actions
 
-### 4. CI/CD (Continuous Integration / Continuous Deployment)
-**What is it?** CI/CD is an automated workflow. "Continuous Integration" means every time a developer saves and uploads new code to GitHub, an automated server immediately takes that code, builds it, and tests it to see if it broke anything. 
-**How it works in Sentinel:** Sentinel uses *GitHub Actions*. The absolute second a developer pushes new code to GitHub, the CI pipeline automatically wakes up a virtual Ubuntu server. This server builds the Spring Boot backend, builds the Angular frontend, turns them both on, and runs the Cypress robot against them. If the robot succeeds, the code is considered safe!
+## CI regression demonstration
 
-### 5. JIRA Workflow Automation
-**What is it?** JIRA is the most popular project management tool used by software teams to track bugs, tasks, and sprints. "Jira Automation" involves writing scripts to make JIRA create or update tasks without human intervention.
-**How it works in Sentinel:** In the Sentinel CI/CD pipeline, if the Cypress robot detects a failure (for example, you try to book a seat but the system crashes), a custom Node.js script intercepts that error. It instantly grabs the technical error logs and uses the JIRA API to automatically write and file a highly detailed "Bug Report" directly into Jira for the engineers to fix. 
+A deliberate seat-count regression was introduced in [`6033c49`](https://github.com/MarufaMeem/FinCore-/commit/6033c492154145f9e1bb1c8414c276c97ffed5a7): booking seats were added back to availability rather than subtracted. JUnit caught the defect (`expected 90, was 110`). After the CI workflow was adjusted to continue into E2E reporting and Cypress execution was repaired, Cypress also detected the seat-count regression and the reporter auto-filed the related JIRA bug **SEN-8** (the same run also created **SEN-7** for a separate event-listing failure). The fix was restored in [`36bb093`](https://github.com/MarufaMeem/FinCore-/commit/36bb09359c2eeda5a58bd4d903f6740a554605c1), which returns the booking calculation to subtraction.
 
----
+This is intentionally a portfolio demonstration: a seeded defect is caught by unit and browser tests and represented in JIRA without a manual QA-to-ticket handoff.
 
-## Technical Deep-Dive (For Engineers)
+## Run locally
 
-### Backend Engineering & Database Architecture
-* **REST APIs:** The backend exposes RESTful endpoints (e.g., `/api/events`) through Spring `@RestController` classes.
-* **Database Connectivity:** The system connects to a relational **PostgreSQL** database using JPA/Hibernate for seamless CRUD operations using generated SQL. 
-* **Data Seeding:** A `data.sql` file seeds the events table on startup.
+1. Start PostgreSQL, then run `mvn spring-boot:run` from `backend/`.
+2. Run `npm install && npm start` from `frontend/`.
+3. From the repository root, run `npm install` and `npm run cy:run`.
+4. To report failed Mochawesome results to JIRA, provide `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, and `JIRA_PROJECT_KEY`, then run `npm run report:jira`.
 
-### Frontend Development & UI State
-* **Angular Architecture:** The frontend is structured into modular Angular standalone components (`AppComponent`, `BookingFormComponent`).
-* **RxJS Services:** The `EventService` leverages RxJS `Observable` patterns to asynchronously fetch data from the Spring backend.
-* **Glassmorphism Aesthetic:** The UI achieves a premium, modern look with CSS backdrop filters, smooth hover micro-animations, and dynamic box-shadows.
+## What I’d improve with more time
 
-### Quality Assurance & Cybersecurity Validation
-* **Intentional Failure States:** Certain tests are purposefully engineered to intentionally trigger failures when edge-case thresholds are met, which validates that the CI/CD pipeline's Bug Reporting safety nets truly function in an enterprise crisis.
-
----
-
-## Getting Started Locally
-
-### Prerequisites
-* **Java 17** (Temurin/Adoptium)
-* **Node.js 20+** and npm
-* **PostgreSQL** or Docker (for the database layer)
-
-### 1. Booting the Application
-1. **Backend:** Navigate to `backend/`, verify PostgreSQL is running, and execute `mvn spring-boot:run`. The REST API spins up on `http://localhost:8081`.
-2. **Frontend:** Navigate to `frontend/`, run `npm install` followed by `npm run start`. The client UI boots on `http://localhost:4200`.
-
-### 2. Executing Automated Tests
-1. Ensure both the local servers are healthy.
-2. Run headless diagnostics: `npm run cy:run`
-3. Launch visual GUI runner for Cypress: `npx cypress open`
+- Send Slack notifications rather than email-only notifications.
+- Use ScriptRunner/Groovy for advanced JIRA automation and issue deduplication.
+- Add multi-environment reporting for local, staging, and production test runs.
+- Add test artifacts and richer trend metrics to the CI workflow.
