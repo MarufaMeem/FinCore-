@@ -18,8 +18,7 @@ import { BookingFormComponent } from './booking-form.component';
           <p>📍 {{ event.venue }}<br>📅 {{ event.eventDate }}</p>
           
           <div class="card-footer">
-            <span class="badge">{{ event.availableSeats }} / {{ event.totalSeats }} seats</span>
-            <button data-cy="select-event" (click)="select(event)">Book now</button>
+<span class="badge" data-cy="seat-count-display">{{ event.availableSeats }} / {{ event.totalSeats }} seats</span>            <button data-cy="select-event" (click)="select(event)">Book now</button>
           </div>
         </div>
       </div>

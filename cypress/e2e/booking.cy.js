@@ -35,8 +35,7 @@ describe('Event booking flow', () => {
     const eventName = 'Dhaka Tech Summit 2026';
 
     cy.contains('[data-cy=event-card]', eventName)
-      .find('p').eq(1).invoke('text').then((before) => {
-        const seatsBefore = parseInt(before.match(/(\d+)\s*\/\s*(\d+)/)[1], 10);
+.find('[data-cy=seat-count-display]').invoke('text')        const seatsBefore = parseInt(before.match(/(\d+)\s*\/\s*(\d+)/)[1], 10);
 
         cy.contains('[data-cy=event-card]', eventName)
           .find('[data-cy=select-event]').click();
@@ -48,8 +47,7 @@ describe('Event booking flow', () => {
 
         cy.reload();
         cy.contains('[data-cy=event-card]', eventName)
-          .find('p').eq(1).invoke('text').then((after) => {
-            const seatsAfter = parseInt(after.match(/(\d+)\s*\/\s*(\d+)/)[1], 10);
+.find('[data-cy=seat-count-display]').invoke('text')            const seatsAfter = parseInt(after.match(/(\d+)\s*\/\s*(\d+)/)[1], 10);
             expect(seatsAfter).to.eq(seatsBefore - 3);
           });
       });
