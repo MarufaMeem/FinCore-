@@ -4,6 +4,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
+    "build:ci": "ng build --configuration ci",
     "test": "ng test",
     "e2e": "cypress open"
   },
