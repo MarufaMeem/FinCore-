@@ -2,7 +2,6 @@
 
 Sentinel is a full-stack event-booking application built as a practical demonstration of three connected engineering disciplines: backend development, software quality assurance, and delivery/process automation. It is not only an app where users reserve event seats; it also shows how a defect can be detected by tests, recorded in JIRA with useful technical context, routed by automation, and made visible to a team through a dashboard.
 
-This repository is designed as a portfolio project for early-career Software Engineer, QA Automation Engineer, and JIRA Automation Engineer opportunities.
 
 ## Live project
 
@@ -20,12 +19,12 @@ In a manual QA process, a tester discovers a problem, gathers screenshots and re
 ```text
 User booking flow
       │
-Angular 17 UI ──HTTP/JSON──> Spring Boot REST API ──JPA/Hibernate──> PostgreSQL
+Angular 17 UI ──HTTP/JSON──> Spring Boot REST API ──> PostgreSQL
       │
       └── Cypress validates the real user journey
                     │ on failure
                     ▼
-          Mochawesome JSON report → Node.js JIRA REST API reporter
+                 Node.js JIRA REST API reporter
                                              │
                                              ▼
                       JIRA Automation rules → Sentinel QA Health dashboard
@@ -239,17 +238,4 @@ Set the four JIRA environment variables listed above, then run:
 npm run report:jira
 ```
 
-Never commit API tokens, passwords, or personal credentials.
 
-## Improvements I would make with more time
-
-- Add Slack or Microsoft Teams notifications alongside email alerts.
-- Add ticket deduplication so repeated failures update an existing JIRA bug rather than creating duplicates.
-- Introduce separate local, staging, and production test/reporting environments.
-- Add API-level integration tests, security tests, and accessibility checks.
-- Use ScriptRunner/Groovy where JIRA Cloud/Data Center requirements call for more advanced workflow logic.
-- Add richer test artifacts, trend metrics, and release-quality gates.
-
-## Professional approach
-
-This project represents hands-on learning and an ownership mindset: build a feature, write tests for its expected behaviour, automate repeatable checks, investigate failures with evidence, and document the outcome clearly. Those habits transfer directly to collaborative Agile teams, code review, sprint planning, production support, and quality-focused software delivery.
